@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><h1 align="center">Satellite Imagery Change Detection</h1></title>
+    <style>
+        
+        body {
+            font-family: Arial, sans-serif;
+        }
+        #map {
+            width: 100%;
+            height: 400px;
+        }
+    </style>
+</head>
+<body bgcolor="#ADD8E6">
+    <h1 align="center">Satellite Imagery Change Detection</h1>
+    <p align="center">Upload two images for change detection:</p>
+    <center>
+    Old image-><input type="file" id="image1" accept="image/*">
+    New image-><input type="file" id="image2" accept="image/*"></br></br>
+    <button id="detectChanges">Detect Changes</button>
+    
+    <div id="result"></div>
+
+    <div id="map"></div>
+    </center>
+    <script>
+        document.getElementById('detectChanges').addEventListener('click', function () {
+            const image1 = document.getElementById('image1').files[0];
+            const image2 = document.getElementById('image2').files[0];
+
+            if (!image1 || !image2) {
+                alert('Please upload two images.');
+                return;
+            }
+
+            // You would use AI/ML libraries to detect changes in the images here.
+            // This code is a placeholder for your actual ML model.
+            // You can use libraries like TensorFlow.js or upload the images to a backend for processing.
+
+            // Example: Mocking change detection results
+            const changeDetected = true;
+            const changeDescription = 'Change detected in the selected area.';
+
+            // Display the results
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = `
+                <p>${changeDescription}</p>
+                <p>Change Detected: ${changeDetected ? 'Yes' : 'No'}</p>
+            `;
+
+            // Display the images on the map (you would need a mapping library for this)
+            const map = L.map('map').setView([0, 0], 2);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+            }).addTo(map);
+
+            const imageUrl1 = URL.createObjectURL(image1);
+            const imageUrl2 = URL.createObjectURL(image2);
+
+            L.imageOverlay(imageUrl1, [[-90, -180], [90, 180]]).addTo(map);
+            L.imageOverlay(imageUrl2, [[-90, -180], [90, 180]]).addTo(map);
+
+            const bounds = [[-90, -180], [90, 180]];
+            map.fitBounds(bounds);
+        });
+    </script>
+
+    <!-- Include a mapping library like Leaflet.js -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+</body>
+</html>
